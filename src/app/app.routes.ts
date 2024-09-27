@@ -10,7 +10,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirige al login por defecto
     {
       path: '',
-      // canActivate: [authGuard],
+      canActivate: [authGuard],
       component: LayoutComponent,
       children: [
         { path: 'home', component: HomeComponent },
