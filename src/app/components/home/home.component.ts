@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { ScriptLoaderService } from '../../services/script-loader.service';
 
 @Component({
   selector: 'app-home',
@@ -9,17 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  ngOnInit(): void {
-    this.loadJsFile("assets/js/dashboards-analytics.js", false, false);  
-  }
+  constructor(private scriptLoaderService: ScriptLoaderService) {}
 
-  loadJsFile(url: string, async: boolean, defer: boolean) {  
-    let node = document.createElement('script');  
-    node.src = url;  
-    node.type = 'text/javascript';  
-    node.async = async;
-    node.defer = defer;
-    document.getElementsByTagName('head')[0].appendChild(node);  
-  } 
+  ngOnInit(): void {
+    this.scriptLoaderService.cargarScript("assets/js/dashboards-analytics.js", false, false);
+  }
 
 }

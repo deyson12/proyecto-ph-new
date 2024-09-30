@@ -1,6 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { User } from '../../state/user/user';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../app.reducer';
+import { AuthService } from '../../services/auth.service';
+import { ScriptLoaderService } from '../../services/script-loader.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,20 +17,29 @@ import { RouterModule } from '@angular/router';
 })
 export class LayoutComponent implements OnInit {
 
-  constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document){}
+  suscription: Subscription;
 
-  ngOnInit(): void {
-    //this.cargarScript('assets/vendor/js/menu.js');
-    this.cargarScript('assets/js/main.js');
-    //this.cargarScript('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js');
+  user: User = {
+    username: '',
+    isLoggedIn: false
+  };
+
+  constructor(private scriptLoaderService: ScriptLoaderService, 
+    private readonly state: Store<AppState>,
+    private authService: AuthService
+  ){
+
+    this.suscription = this.state.select('user').subscribe( user => {
+      this.user = user;
+    });
   }
 
-  cargarScript(url: string) {
-    const script = this.renderer.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    script.async = true;
-    this.renderer.appendChild(this.document.body, script);
+  ngOnInit(): void {
+    this.scriptLoaderService.cargarScript('assets/js/main.js', false, false);
+  }
+
+  onLogout(): void {
+    this.authService.logout();
   }
 
 }

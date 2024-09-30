@@ -4,12 +4,6 @@
 
 'use strict';
 
-console.log("Cargo main.js")
-
-function prueba() {
-  console.log("Prueba consola");
-}
-
 let isRtl = window.Helpers.isRtl(),
   isDarkStyle = window.Helpers.isDarkStyle(),
   menu,

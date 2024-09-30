@@ -11,6 +11,8 @@
 
 'use strict';
 
+console.log('Cargando calendario');
+
 let direction = 'ltr';
 
 if (isRtl) {

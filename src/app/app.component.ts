@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { ScriptLoaderService } from './services/script-loader.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,12 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit  {
+export class AppComponent {
 
   username = '';
   password = '';
 
-  constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document,
-              private authService: AuthService, private router: Router){}
+  constructor(private authService: AuthService){}
 
   onLogin() {
     const loggedIn = this.authService.login(this.username, this.password);
@@ -24,27 +24,4 @@ export class AppComponent implements OnInit  {
       alert('Credenciales incorrectas. Intenta de nuevo.');
     }
   }
-
-  ngOnInit(): void {
-    
-  }
-
-  cargarScript(url: string) {
-    const script = this.renderer.createElement('script');
-    script.type = 'text/javascript';
-    script.src = url;
-    script.async = true;
-    this.renderer.appendChild(this.document.body, script);
-  }
-
-  loadJsFile(url: string, async: boolean, defer: boolean) {  
-    if ( url != "" ) {
-      let node = document.createElement('script');  
-      node.src = url;  
-      node.type = 'text/javascript';  
-      node.async = async;
-      node.defer = defer;
-      document.getElementsByTagName('head')[0].appendChild(node);  
-    }
-  }  
 }

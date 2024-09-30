@@ -4,6 +4,8 @@
 
 'use strict';
 
+console.log("Entro en toast");
+
 (function () {
   // Bootstrap toasts example
   // --------------------------------------------------------------------

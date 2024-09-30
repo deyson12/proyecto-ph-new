@@ -4,6 +4,8 @@
 
 'use strict';
 
+console.log('Cargando eventos');
+
 let date = new Date();
 let nextDay = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 // prettier-ignore
