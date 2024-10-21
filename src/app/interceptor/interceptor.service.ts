@@ -4,7 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 export const TokenInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
-  const router = inject(Router); // Usamos inject para obtener el servicio de Router en una función
+  const router = inject(Router); 
 
   const token = localStorage.getItem('token');
 
@@ -22,7 +22,6 @@ export const TokenInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next:
       console.log("Captura error: ", error)
 
       if (error.status === 401 || error.status === 403) {
-        // Redirige al usuario al login cuando el token haya expirado
         router.navigate(['/login']);
       }
       return throwError(() => error);

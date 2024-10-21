@@ -16,7 +16,7 @@ export class ScriptLoaderService {
 
     if (existingScript) {
       this.renderer.removeChild(document.body, existingScript);
-      console.log(`El script con URL ${url} ha sido eliminado.`);
+      //console.log(`El script con URL ${url} ha sido eliminado.`);
     }
 
     const script = this.renderer.createElement('script');
@@ -26,6 +26,6 @@ export class ScriptLoaderService {
     script.defer = defer;
     this.renderer.appendChild(document.body, script);
 
-    console.log(`El script con URL ${url} ha sido agregado nuevamente.`);
+    //console.log(`El script con URL ${url} ha sido agregado nuevamente.`);
   }
 }

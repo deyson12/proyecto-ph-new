@@ -8,9 +8,10 @@
               class="btn btn-primary btn-toggle-sidebar"
               data-bs-toggle="offcanvas"
               data-bs-target="#addEventSidebar"
-              aria-controls="addEventSidebar">
+              aria-controls="addEventSidebar"
+              (click)="addNewEvent()">
               <i class="bx bx-plus me-1"></i>
-              <span class="align-middle">Add Event</span>
+              <span class="align-middle">Realizar Reserva</span>
             </button>
           </div>
         </div>
@@ -42,46 +43,46 @@
               <input
                 class="form-check-input input-filter"
                 type="checkbox"
-                id="select-personal"
-                data-value="personal"
+                id="select-piscina"
+                data-value="piscina"
                 checked />
-              <label class="form-check-label" for="select-personal">Personal</label>
+              <label class="form-check-label" for="select-piscina">Piscina</label>
             </div>
             <div class="form-check mb-2">
               <input
                 class="form-check-input input-filter"
                 type="checkbox"
-                id="select-business"
-                data-value="business"
+                id="select-zona-de-juegos"
+                data-value="zona-de-juegos"
                 checked />
-              <label class="form-check-label" for="select-business">Business</label>
+              <label class="form-check-label" for="select-zona-de-juegos">Zona de juegos</label>
             </div>
             <div class="form-check form-check-warning mb-2">
               <input
                 class="form-check-input input-filter"
                 type="checkbox"
-                id="select-family"
-                data-value="family"
+                id="select-cancha"
+                data-value="cancha"
                 checked />
-              <label class="form-check-label" for="select-family">Family</label>
+              <label class="form-check-label" for="select-cancha">Cancha</label>
             </div>
             <div class="form-check form-check-success mb-2">
               <input
                 class="form-check-input input-filter"
                 type="checkbox"
-                id="select-holiday"
-                data-value="holiday"
+                id="select-salon-social"
+                data-value="salon-social"
                 checked />
-              <label class="form-check-label" for="select-holiday">Holiday</label>
+              <label class="form-check-label" for="select-salon-social">Salon Social</label>
             </div>
             <div class="form-check form-check-info">
               <input
                 class="form-check-input input-filter"
                 type="checkbox"
-                id="select-etc"
-                data-value="etc"
+                id="select-gimnasio"
+                data-value="gimnasio"
                 checked />
-              <label class="form-check-label" for="select-etc">ETC</label>
+              <label class="form-check-label" for="select-gimnasio">Gimnasio</label>
             </div>
           </div>
         </div>
@@ -93,7 +94,11 @@
         <div class="card shadow-none border-0">
           <div class="card-body pb-0">
             <!-- FullCalendar -->
-            <div id="calendar"></div>
+              <full-calendar #calendar [options]="calendarOptions">
+                <ng-template #eventContent let-arg >
+                  {{ arg.event.title }}
+              </ng-template>    
+              </full-calendar>
           </div>
         </div>
         <div class="app-overlay"></div>
@@ -104,7 +109,7 @@
           id="addEventSidebar"
           aria-labelledby="addEventSidebarLabel">
           <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title mb-2" id="addEventSidebarLabel">Add Event</h5>
+            <h5 class="offcanvas-title mb-2" id="addEventSidebarLabel">Realizar Reserva</h5>
             <button
               type="button"
               class="btn-close text-reset"
@@ -116,6 +121,7 @@
               <div class="mb-3">
                 <label class="form-label" for="eventTitle">Title</label>
                 <input
+                  [(ngModel)]="eventTitle"
                   type="text"
                   class="form-control"
                   id="eventTitle"
@@ -123,34 +129,26 @@
                   placeholder="Event Title" />
               </div>
               <div class="mb-3">
-                <label class="form-label" for="eventLabel">Label</label>
+                <label class="form-label" for="eventLabel">Zona común</label>
                 <select class="select2 select-event-label form-select" id="eventLabel" name="eventLabel">
-                  <option data-label="primary" value="Business" selected>Business</option>
-                  <option data-label="danger" value="Personal">Personal</option>
-                  <option data-label="warning" value="Family">Family</option>
-                  <option data-label="success" value="Holiday">Holiday</option>
-                  <option data-label="info" value="ETC">ETC</option>
+                  <option data-label="primary" value="Piscina" selected>Piscina</option>
+                  <option data-label="danger" value="Zona de juegos">Zona de juegos</option>
+                  <option data-label="warning" value="Cancha">Cancha</option>
+                  <option data-label="success" value="Salon Social">Salon Social</option>
+                  <option data-label="info" value="Gimnasio">Gimnasio</option>
                 </select>
               </div>
               <div class="mb-3">
-                <label class="form-label" for="eventStartDate">Start Date</label>
+                <label class="form-label" for="eventStartDate">Fecha</label>
                 <input
+                  [(ngModel)]="eventStartDate"
                   type="text"
                   class="form-control"
                   id="eventStartDate"
                   name="eventStartDate"
-                  placeholder="Start Date" />
+                  placeholder="Fecha" />
               </div>
-              <div class="mb-3">
-                <label class="form-label" for="eventEndDate">End Date</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="eventEndDate"
-                  name="eventEndDate"
-                  placeholder="End Date" />
-              </div>
-              <div class="mb-3">
+              <!--div class="mb-3">
                 <label class="switch">
                   <input type="checkbox" class="switch-input allDay-switch" />
                   <span class="switch-toggle-slider">
@@ -159,17 +157,8 @@
                   </span>
                   <span class="switch-label">All Day</span>
                 </label>
-              </div>
-              <div class="mb-3">
-                <label class="form-label" for="eventURL">Event URL</label>
-                <input
-                  type="url"
-                  class="form-control"
-                  id="eventURL"
-                  name="eventURL"
-                  placeholder="https://www.google.com" />
-              </div>
-              <div class="mb-3 select2-primary">
+              </div-->
+              <!--div class="mb-3 select2-primary">
                 <label class="form-label" for="eventGuests">Add Guests</label>
                 <select
                   class="select2 select-event-guests form-select"
@@ -183,8 +172,8 @@
                   <option data-avatar="9.png" value="Sandy Vega">Sandy Vega</option>
                   <option data-avatar="11.png" value="Cheryl May">Cheryl May</option>
                 </select>
-              </div>
-              <div class="mb-3">
+              </div-->
+              <!--div class="mb-3">
                 <label class="form-label" for="eventLocation">Location</label>
                 <input
                   type="text"
@@ -192,14 +181,19 @@
                   id="eventLocation"
                   name="eventLocation"
                   placeholder="Enter Location" />
-              </div>
+              </div-->
               <div class="mb-3">
-                <label class="form-label" for="eventDescription">Description</label>
+                <label class="form-label" for="eventDescription">Observaciones</label>
                 <textarea class="form-control" name="eventDescription" id="eventDescription"></textarea>
               </div>
               <div class="mb-3 d-flex justify-content-sm-between justify-content-start my-4">
                 <div>
-                  <button type="submit" class="btn btn-primary btn-add-event me-sm-3 me-1">Add</button>
+                  <button 
+                    type="button" 
+                    id="addEvent" 
+                    class="btn btn-primary btn-add-event me-sm-3 me-1"
+                    (click)="addEvent()">
+                    Reservar</button>
                   <button
                     type="reset"
                     class="btn btn-label-secondary btn-cancel me-sm-0 me-1"

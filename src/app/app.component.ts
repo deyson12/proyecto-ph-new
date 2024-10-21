@@ -6,8 +6,6 @@ import { ScriptLoaderService } from './services/script-loader.service';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -19,9 +17,6 @@ export class AppComponent {
   constructor(private authService: AuthService){}
 
   onLogin() {
-    const loggedIn = this.authService.login(this.username, this.password);
-    if (!loggedIn) {
-      alert('Credenciales incorrectas. Intenta de nuevo.');
-    }
+    this.authService.login(this.username, this.password).subscribe();
   }
 }
