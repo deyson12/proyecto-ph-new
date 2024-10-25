@@ -108,8 +108,6 @@ export class BookingComponent implements OnInit {
     const existingEvents = Array.isArray(this.calendarOptions.events) ? this.calendarOptions.events : [];
   
     this.calendarOptions.events = [...existingEvents, newEvent];
-  
-    console.log(this.calendarOptions.events);
 
     let addEventSidebar = document.getElementById('addEventSidebar') as HTMLDivElement;
     const bsAddEventSidebar = new bootstrap.Offcanvas(addEventSidebar);

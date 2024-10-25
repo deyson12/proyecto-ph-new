@@ -8,7 +8,7 @@ export const TokenInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next:
 
   const token = localStorage.getItem('token');
 
-  if (!req.url.endsWith('/authenticate')) {
+  if (!req.url.endsWith('/authenticate') && !req.url.endsWith('/unit') ) {
     req = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
@@ -18,11 +18,8 @@ export const TokenInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next:
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      
-      console.log("Captura error: ", error)
-
       if (error.status === 401 || error.status === 403) {
-        router.navigate(['/login']);
+        router.navigate(['/']);
       }
       return throwError(() => error);
     })

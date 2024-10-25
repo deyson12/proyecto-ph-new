@@ -17,6 +17,6 @@ export const authGuard: CanActivateFn = (route, state) => {
       localStorage.removeItem('token'); // Si el token expiró, lo eliminamos
     }
   }
-  router.navigate(['/login']);
+  router.navigate(['/']);
   return false;
 };

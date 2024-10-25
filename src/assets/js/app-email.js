@@ -152,7 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
           searchEmailListItems = [].slice.call(document.querySelectorAll('.email-list-item'));
         }
 
-        // console.log(searchValue);
         searchEmailListItems.forEach(searchEmailListItem => {
           let searchEmailListItemText = searchEmailListItem.textContent.toLowerCase();
           if (searchValue) {

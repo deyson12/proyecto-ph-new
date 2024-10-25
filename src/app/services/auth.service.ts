@@ -15,45 +15,26 @@ export class AuthService {
 
   private url = `${environment.apiUrl}/v1/auth/authenticate`;
 
-  private isLoggedIn = false;
-
   constructor(private http: HttpClient, private readonly store: Store<AppState>) {}
 
-  login(username: string, password: string): Observable<any> {
+  login(username: string, password: string, tenant: string): Observable<any> {
 
     const body = {
       email: username,
-      password: password
+      password,
+      tenant
     };
 
     return this.http.post<any>(this.url, body).pipe(
-      tap(res => {
-        localStorage.setItem('token', res.token);
-
-        this.isLoggedIn = true;
-
-        const user: User = {
-          username,
-          isLoggedIn: true
-        };
-
-        this.store.dispatch(new fromUserAction.SaveAction(user));
-      }),
       catchError(error => {
-        this.isLoggedIn = false;
-        return throwError(() => new Error('Something bad happened; please try again later.'));
+        return throwError(() => new Error('Something bad happened; please try again later.', error));
       })
     );
   }
 
   logout(): void {
     localStorage.removeItem('token');
-    this.isLoggedIn = false;
-
     this.store.dispatch(new fromUserAction.RemoveAction());
   }
 
-  isAuthenticated(): boolean {
-    return this.isLoggedIn;
-  }
 }

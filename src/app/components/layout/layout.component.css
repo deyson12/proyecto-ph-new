@@ -1,0 +1,26 @@
+.app-brand-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .brand-logo {
+    width: 100%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  
+  .circle-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;  /* Debe coincidir con la clase w-px-40 */
+    height: 40px; /* Debe coincidir con la clase h-px-40 */
+    background-color: #696cff; /* Color de fondo del círculo */
+    border-radius: 50%; /* Esto hace que el elemento sea redondo */
+    font-size: 16px; /* Tamaño de la letra */
+    font-weight: bold; /* Hace la letra más gruesa */
+    color: #fff; /* Color de la letra */
+    text-transform: uppercase; /* Pone la letra en mayúscula */
+}

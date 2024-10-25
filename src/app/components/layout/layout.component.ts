@@ -1,12 +1,13 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
 import { User } from '../../state/user/user';
-import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 import { AuthService } from '../../services/auth.service';
 import { ScriptLoaderService } from '../../services/script-loader.service';
+import { userInitialState } from '../../state/user/user.reducer';
+import { Unit } from '../../state/unit/unit';
+import { unitInitialState } from '../../state/unit/unit.reducer';
 
 @Component({
   selector: 'app-layout',
@@ -17,20 +18,17 @@ import { ScriptLoaderService } from '../../services/script-loader.service';
 })
 export class LayoutComponent implements OnInit {
 
-  suscription: Subscription;
-
-  user: User = {
-    username: '',
-    isLoggedIn: false
-  };
+  user: User = userInitialState;
+  unit: Unit = unitInitialState;
 
   constructor(private scriptLoaderService: ScriptLoaderService, 
     private readonly state: Store<AppState>,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ){
-
-    this.suscription = this.state.select('user').subscribe( user => {
+    this.state.select((state) => state).subscribe( ({ user, unit }) => {
       this.user = user;
+      this.unit = unit;
     });
   }
 
@@ -39,6 +37,7 @@ export class LayoutComponent implements OnInit {
   }
 
   onLogout(): void {
+    this.router.navigate(['/'+this.unit.unit]);
     this.authService.logout();
   }
 

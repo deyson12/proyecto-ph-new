@@ -1,21 +1,25 @@
-import { isDevMode, NgModule } from '@angular/core';
+import { APP_INITIALIZER, isDevMode, NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { RouterModule } from '@angular/router'; // Importa el RouterModule
-import { routes } from './app.routes';
+import { RouterModule } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { ActionReducer, StoreModule } from '@ngrx/store';
 import { structure } from './app.reducer';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { TokenInterceptor } from './interceptor/interceptor.service';
-import { FullCalendarComponent, FullCalendarModule } from '@fullcalendar/angular';
+import { FullCalendarModule } from '@fullcalendar/angular';
 import { Booking2Component } from './components/booking2/booking2/booking2.component';
 import { BookingComponent } from './components/booking/booking/booking.component';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { UnitService } from './services/unit.service';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({ keys: ['user'], rehydrate: true })(reducer);
+  return localStorageSync({ keys: ['user', 'unit'], rehydrate: true })(reducer);
+}
+
+export function loadDynamicRoutes(unitService: UnitService) {
+  return async () => await unitService.loadUnitRoutes();  // Cambiado a función async
 }
 
 @NgModule({
@@ -28,14 +32,20 @@ export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionRedu
     BrowserModule,
     FormsModule,
     FullCalendarModule,
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot([]),
     StoreModule.forRoot(structure, {
-      metaReducers: [localStorageSyncReducer], // Sincroniza el estado del store con localStorage
+      metaReducers: [localStorageSyncReducer], 
     }),
   ],
   providers: [
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true}),
-    provideHttpClient(withInterceptors([TokenInterceptor]))
+    provideHttpClient(withInterceptors([TokenInterceptor])),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: loadDynamicRoutes,
+      deps: [UnitService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

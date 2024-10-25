@@ -4,7 +4,9 @@
 
 'use strict';
 
-let isRtl = window.Helpers.isRtl(),
+console.log('Cargo main')
+
+var isRtl = window.Helpers.isRtl(),
   isDarkStyle = window.Helpers.isDarkStyle(),
   menu,
   animate,
@@ -22,7 +24,7 @@ if (document.getElementById('layout-menu')) {
   // Initialize menu
   //-----------------
 
-  let layoutMenuEl = document.querySelectorAll('#layout-menu');
+  var layoutMenuEl = document.querySelectorAll('#layout-menu');
   layoutMenuEl.forEach(function (element) {
     menu = new Menu(element, {
       orientation: isHorizontalLayout ? 'horizontal' : 'vertical',
@@ -40,7 +42,7 @@ if (document.getElementById('layout-menu')) {
   });
 
   // Initialize menu togglers and bind click on each
-  let menuToggler = document.querySelectorAll('.layout-menu-toggle');
+  var menuToggler = document.querySelectorAll('.layout-menu-toggle');
   menuToggler.forEach(item => {
     item.addEventListener('click', event => {
       event.preventDefault();
@@ -53,9 +55,9 @@ if (document.getElementById('layout-menu')) {
             String(window.Helpers.isCollapsed())
           );
           // Update customizer checkbox state on click of menu toggler
-          let layoutCollapsedCustomizerOptions = document.querySelector('.template-customizer-layouts-options');
+          var layoutCollapsedCustomizerOptions = document.querySelector('.template-customizer-layouts-options');
           if (layoutCollapsedCustomizerOptions) {
-            let layoutCollapsedVal = window.Helpers.isCollapsed() ? 'collapsed' : 'expanded';
+            var layoutCollapsedVal = window.Helpers.isCollapsed() ? 'collapsed' : 'expanded';
             layoutCollapsedCustomizerOptions.querySelector(`input[value="${layoutCollapsedVal}"]`).click();
           }
         } catch (e) {}
@@ -64,8 +66,8 @@ if (document.getElementById('layout-menu')) {
   });
 
   // Display menu toggle (layout-menu-toggle) on hover with delay
-  let delay = function (elem, callback) {
-    let timeout = null;
+  var delay = function (elem, callback) {
+    var timeout = null;
     elem.onmouseenter = function () {
       // Set timeout to be a timer which will invoke callback after 300ms (not for small screen)
       if (!Helpers.isSmallScreen()) {
@@ -103,7 +105,7 @@ if (document.getElementById('layout-menu')) {
   });
 
   // Display in main menu when menu scrolls
-  let menuInnerContainer = document.getElementsByClassName('menu-inner'),
+  var menuInnerContainer = document.getElementsByClassName('menu-inner'),
     menuInnerShadow = document.getElementsByClassName('menu-inner-shadow')[0];
   if (menuInnerContainer.length > 0 && menuInnerShadow) {
     menuInnerContainer[0].addEventListener('ps-scroll-y', function () {
@@ -132,19 +134,19 @@ if (document.getElementById('layout-menu')) {
   }
 
   //Style Switcher (Light/Dark/System Mode)
-  let styleSwitcher = document.querySelector('.dropdown-style-switcher');
+  var styleSwitcher = document.querySelector('.dropdown-style-switcher');
 
   // Get style from local storage or use 'system' as default
-  let storedStyle =
+  var storedStyle =
     localStorage.getItem('templateCustomizer-' + templateName + '--Style') || //if no template style then use Customizer style
     (window.templateCustomizer?.settings?.defaultStyle ?? 'light'); //!if there is no Customizer then use default style as light
 
   // Set style on click of style switcher item if template customizer is enabled
   if (window.templateCustomizer && styleSwitcher) {
-    let styleSwitcherItems = [].slice.call(styleSwitcher.children[1].querySelectorAll('.dropdown-item'));
+    var styleSwitcherItems = [].slice.call(styleSwitcher.children[1].querySelectorAll('.dropdown-item'));
     styleSwitcherItems.forEach(function (item) {
       item.addEventListener('click', function () {
-        let currentStyle = this.getAttribute('data-theme');
+        var currentStyle = this.getAttribute('data-theme');
         if (currentStyle === 'light') {
           window.templateCustomizer.setStyle('light');
         } else if (currentStyle === 'dark') {
@@ -203,17 +205,17 @@ if (document.getElementById('layout-menu')) {
       });
   }
 
-  let languageDropdown = document.getElementsByClassName('dropdown-language');
+  var languageDropdown = document.getElementsByClassName('dropdown-language');
 
   if (languageDropdown.length) {
-    let dropdownItems = languageDropdown[0].querySelectorAll('.dropdown-item');
+    var dropdownItems = languageDropdown[0].querySelectorAll('.dropdown-item');
 
-    for (let i = 0; i < dropdownItems.length; i++) {
+    for (var i = 0; i < dropdownItems.length; i++) {
       dropdownItems[i].addEventListener('click', function () {
-        let currentLanguage = this.getAttribute('data-language');
-        let textDirection = this.getAttribute('data-text-direction');
+        var currentLanguage = this.getAttribute('data-language');
+        var textDirection = this.getAttribute('data-text-direction');
 
-        for (let sibling of this.parentNode.children) {
+        for (var sibling of this.parentNode.children) {
           var siblingEle = sibling.parentElement.parentNode.firstChild;
 
           // Loop through each sibling and push to the array
@@ -246,9 +248,9 @@ if (document.getElementById('layout-menu')) {
   }
 
   function localize() {
-    let i18nList = document.querySelectorAll('[data-i18n]');
+    var i18nList = document.querySelectorAll('[data-i18n]');
     // Set the current language in dd
-    let currentLanguageEle = document.querySelector('.dropdown-item[data-language="' + i18next.language + '"]');
+    var currentLanguageEle = document.querySelector('.dropdown-item[data-language="' + i18next.language + '"]');
 
     if (currentLanguageEle) {
       currentLanguageEle.click();
@@ -330,7 +332,7 @@ if (document.getElementById('layout-menu')) {
   // Init PerfectScrollbar in Navbar Dropdown (i.e notification)
   window.Helpers.initNavbarDropdownScrollbar();
 
-  let horizontalMenuTemplate = document.querySelector("[data-template^='horizontal-menu']");
+  var horizontalMenuTemplate = document.querySelector("[data-template^='horizontal-menu']");
   if (horizontalMenuTemplate) {
     // if screen size is small then set navbar fixed
     if (window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) {
@@ -440,7 +442,7 @@ if (typeof $ !== 'undefined') {
     }
     // Open search on 'CTRL+/'
     $(document).on('keydown', function (event) {
-      let ctrlKey = event.ctrlKey,
+      var ctrlKey = event.ctrlKey,
         slashKey = event.which === 191;
 
       if (ctrlKey && slashKey) {
@@ -468,7 +470,7 @@ if (typeof $ !== 'undefined') {
       // Filter config
       var filterConfig = function (data) {
         return function findMatches(q, cb) {
-          let matches;
+          var matches;
           matches = [];
           data.filter(function (i) {
             if (i.name.toLowerCase().startsWith(q.toLowerCase())) {
