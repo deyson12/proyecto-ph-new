@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Unit } from './unit';
+import { Unit } from '../../domain/unit';
 
 export const SAVE = '[Unit] - Save'
 export const REMOVE = '[Unit] - Remove'

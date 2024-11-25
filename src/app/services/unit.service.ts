@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Unit } from '../state/unit/unit';
+import { Unit } from '../domain/unit';
 import { Routes } from '@angular/router';
 import { LoginComponent } from '../components/login/login.component';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { catchError, Observable, of, tap, throwError } from 'rxjs';
+import { firstValueFrom, Observable, of, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,18 +20,17 @@ export class UnitService {
   private unitMapReady: Promise<void>;
 
   constructor(private http: HttpClient) {
-    this.unitMapReady = this.http.get<Unit[]>(this.url).pipe(
-      tap((units: Unit[]) => {
-        units.forEach(unit => {
-          const key = unit.unit;
-          this.unitMap.set(key, unit);
-          this.unitRoutes.push({ path: key, component: LoginComponent })
-        });
-      }),
-      catchError(error => {
-        return throwError(() => new Error('Something bad happened; please try again later.', error));
-      })
-    ).toPromise().then(() => { });
+    this.unitMapReady = firstValueFrom(
+      this.http.get<Unit[]>(this.url).pipe(
+        tap((units: Unit[]) => {
+          units.forEach(unit => {
+            const key = unit.login;
+            this.unitMap.set(key, unit);
+            this.unitRoutes.push({ path: key, component: LoginComponent });
+          });
+        })
+      )
+    ).then(() => { });
   }
 
   getRutas(): Observable<any> {
@@ -58,9 +57,9 @@ export class UnitService {
   getDefaultUnit(): Unit {
     // Retorna una instancia de Unit predeterminada
     let unit: Unit = {
-      unit: '',
+      id: '',
       logo: '',
-      tenant: '',
+      login: '',
       name: ''
     }
     return unit;

@@ -4,8 +4,6 @@
 
 'use strict';
 
-console.log('Cargo main')
-
 var isRtl = window.Helpers.isRtl(),
   isDarkStyle = window.Helpers.isDarkStyle(),
   menu,

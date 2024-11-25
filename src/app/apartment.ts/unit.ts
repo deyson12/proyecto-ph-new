@@ -1,6 +1,6 @@
 export interface Unit {
-    unit: string;
+    id: string;
     name: string;
     logo: string;
-    tenant: string;
+    login: string;
 }

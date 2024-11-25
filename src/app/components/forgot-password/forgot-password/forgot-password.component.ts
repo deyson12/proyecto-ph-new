@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../app.reducer';
-import { Unit } from '../../../state/unit/unit';
+import { Unit } from '../../../domain/unit';
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,10 +14,10 @@ import { Unit } from '../../../state/unit/unit';
 export class ForgotPasswordComponent {
 
   unit: Unit = {
-    unit: '',
+    id: '',
     logo: '',
     name: '',
-    tenant: ''
+    login: ''
   };
 
   constructor(private router: Router, private readonly state: Store<AppState>,) {
@@ -27,6 +27,6 @@ export class ForgotPasswordComponent {
   }
 
   backToLogin(): void {
-    this.router.navigate([this.unit.unit]); // Navega a la URL especificada
+    this.router.navigate([this.unit.login]); // Navega a la URL especificada
   }
 }

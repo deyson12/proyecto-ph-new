@@ -1,5 +1,20 @@
 <div class="card app-calendar-wrapper">
-    <div class="row g-0">
+  @if (loadingEvents) {
+    <div class="d-flex justify-content-center align-items-center min-vh-100">
+      <div class="text-center">
+        <!-- Chase -->
+        <h5>Cargando Reservas</h5>
+        <div class="sk-wave sk-primary mx-auto">
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+        </div>
+      </div>
+    </div>
+  } @else {
+<div class="row g-0">
       <!-- Calendar Sidebar -->
       <div class="col app-calendar-sidebar" id="app-calendar-sidebar">
         <div class="border-bottom p-4 my-sm-0 mb-3">
@@ -94,11 +109,11 @@
         <div class="card shadow-none border-0">
           <div class="card-body pb-0">
             <!-- FullCalendar -->
-              <full-calendar #calendar [options]="calendarOptions">
-                <ng-template #eventContent let-arg >
-                  {{ arg.event.title }}
-              </ng-template>    
-              </full-calendar>
+                <full-calendar #calendar [options]="calendarOptions">
+                  <ng-template #eventContent let-arg >
+                    {{ arg.event.title }}
+                </ng-template>    
+                </full-calendar>
           </div>
         </div>
         <div class="app-overlay"></div>
@@ -121,7 +136,7 @@
               <div class="mb-3">
                 <label class="form-label" for="eventTitle">Title</label>
                 <input
-                  [(ngModel)]="eventTitle"
+                  [(ngModel)]="event.title"
                   type="text"
                   class="form-control"
                   id="eventTitle"
@@ -141,7 +156,7 @@
               <div class="mb-3">
                 <label class="form-label" for="eventStartDate">Fecha</label>
                 <input
-                  [(ngModel)]="eventStartDate"
+                  [(ngModel)]="event.startDate"
                   type="text"
                   class="form-control"
                   id="eventStartDate"
@@ -209,4 +224,5 @@
       </div>
       <!-- /Calendar & Modal -->
     </div>
+  }
 </div>

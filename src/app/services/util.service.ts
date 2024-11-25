@@ -13,9 +13,10 @@ export class UtilService {
   constructor(private http: HttpClient) { }
 
   test(): Observable<any> {
-    return this.http.get(this.url).pipe(
+    return this.http.get(this.url, { responseType: 'text' }).pipe(
       catchError(error => {
-        return throwError(() => new Error('Error en el Healthcheck'));
+        console.log(error);
+        return throwError(() => new Error('Error en el Healthcheck', error));
       })
     );
   }

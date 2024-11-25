@@ -3,7 +3,13 @@ import { ScriptLoaderService } from '../../../services/script-loader.service';
 import { CalendarOptions, EventClickArg } from '@fullcalendar/core';
 import dayGrid from '@fullcalendar/daygrid';
 import interaction, { DateClickArg } from '@fullcalendar/interaction';
-import { aR } from '@fullcalendar/core/internal-common';
+import listPlugin from '@fullcalendar/list'
+import timegrid from '@fullcalendar/timegrid'
+import multiMonth from '@fullcalendar/multimonth'
+import esLocale from '@fullcalendar/core/locales/es';
+import { Event } from '../../../domain/event';
+import { EventService } from '../../../services/event.service';
+
 declare var bootstrap: any;
 
 @Component({
@@ -12,16 +18,37 @@ declare var bootstrap: any;
   styleUrl: './booking.component.css'
 })
 export class BookingComponent implements OnInit {
-  
-  constructor(private scriptLoaderService: ScriptLoaderService) { }
 
-  date = new Date();
-  newEvents: any = [];
+  event: Event = {
+    title: '',
+    startDate: ''
+  };
 
-  eventTitle: String = "";
-  eventStartDate: String = "";
+  loadingEvents = true;
 
   calendarOptions: CalendarOptions = {};
+
+  constructor(private scriptLoaderService: ScriptLoaderService, private eventService: EventService) { }
+
+  ngOnInit(): void {
+    this.loadCalendarOptions();
+    this.loadEvents();
+  }
+
+  loadEvents() {
+    this.eventService.getEvents().subscribe({
+      next: (response) => {
+        this.calendarOptions.events = response;
+        this.loadingEvents = false;
+        this.scriptLoaderService.cargarScript('assets/js/app-calendar2.js', false, false);
+      },
+      error: (error) => {
+        console.error('Error eventos:', error);
+        this.loadingEvents = false;
+        this.scriptLoaderService.cargarScript('assets/js/app-calendar2.js', false, false);
+      }
+    });
+  }
 
   loadCalendarOptions() {
 
@@ -34,23 +61,15 @@ export class BookingComponent implements OnInit {
     };
 
     this.calendarOptions = {
-      plugins: [dayGrid, interaction],
+      plugins: [dayGrid, interaction, listPlugin, timegrid, multiMonth],
       initialView: 'dayGridMonth',
-      locale: 'es',
+      locale: esLocale,
       dayMaxEvents: 2,
-       editable: true, // Para permitir mover
+      editable: false,
       dragScroll: true,
-      /*customButtons: {
-        sidebarToggle: {
-          text: 'Calendario Zonas Comunes'
-        }
-      },*/ // Botones personalizados
-      headerToolbar: {
-        start: 'sidebarToggle, sidebarToggle2, prev,next, title',
-        end: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-      }, // Para agregar fuiltro por mes, semana, dia 
       initialDate: new Date(),
       navLinks: true,
+      weekends: true,
       dateClick: this.handleDateClick.bind(this),
       eventClassNames: function ({ event: calendarEvent }) {
         const extendedProps = calendarEvent._def.extendedProps as any;
@@ -58,55 +77,34 @@ export class BookingComponent implements OnInit {
         return ['fc-event-' + colorName];
       },
       eventClick: this.eventClick.bind(this),
-      events: [
-        { 
-          id: "1",
-          title: '3:00 PM - 524 (3 personas)', 
-          start: '2024-10-28',
-          interactive: true,
-          extendedProps: {
-            calendar: 'piscina'
-          }
-        },
-        {
-          id: "2",
-          title: 'Dart Game?',
-          start: '2024-10-01',
-          extendedProps: {
-            calendar: 'zonaDeJuegos'
-          }
-        },
-        {
-          id: "3",
-          title: 'Festivo',
-          start: '2024-10-26',
-          extendedProps: {
-            calendar: 'cancha'
-          }
-        },
-        {
-          id: "3",
-          title: 'Festivo',
-          start: '2024-10-20',
-          extendedProps: {
-            calendar: 'salonSocial'
+      events: [],
+      customButtons: {
+        myCustomButton: {
+          text: 'custom!',
+          click: function() {
+            alert('clicked the custom button!');
           }
         }
-      ]
+      },
+      headerToolbar: {
+        start: 'myCustomButton prev next',
+        center: 'title',
+        end: 'today,dayGridMonth,timeGridWeek,timeGridDay,listMonth,multiMonthYear'
+      }, // Para agregar fuiltro por mes, semana, dia 
     }
   }
 
   addEvent() {
-    const newEvent = { 
+    const newEvent = {
       title: 'Hola',
-      start: '2024-10-02', 
+      start: '2024-11-02',
       extendedProps: {
         calendar: 'salonSocial'
       }
     };
-  
+
     const existingEvents = Array.isArray(this.calendarOptions.events) ? this.calendarOptions.events : [];
-  
+
     this.calendarOptions.events = [...existingEvents, newEvent];
 
     let addEventSidebar = document.getElementById('addEventSidebar') as HTMLDivElement;
@@ -115,8 +113,8 @@ export class BookingComponent implements OnInit {
   }
 
   cleanFields() {
-    this.eventTitle = '';
-    this.eventStartDate = '';
+    this.event.title = '';
+    this.event.startDate = '';
 
     let btnSubmit = document.querySelector('#addEvent') as HTMLButtonElement;
     let btnDeleteEvent = document.querySelector('.btn-delete-event') as HTMLButtonElement;
@@ -133,8 +131,8 @@ export class BookingComponent implements OnInit {
 
     let addEventSidebar = document.getElementById('addEventSidebar') as HTMLDivElement;
     const bsAddEventSidebar = new bootstrap.Offcanvas(addEventSidebar);
-    this.eventTitle = title;
-    this.eventStartDate = dateStr;
+    this.event.title = title;
+    this.event.startDate = dateStr;
 
     bsAddEventSidebar.show();
   }
@@ -158,13 +156,6 @@ export class BookingComponent implements OnInit {
     btnSubmit.classList.add('btn-update-event');
     btnSubmit.classList.remove('btn-add-event');
     btnDeleteEvent.classList.remove('d-none');
-  }
-
-  ngOnInit(): void {
-
-    this.loadCalendarOptions();
-
-    this.scriptLoaderService.cargarScript('assets/js/app-calendar2.js', false, false);
   }
 
 }

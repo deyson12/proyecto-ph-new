@@ -2,14 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Unit } from '../../state/unit/unit';
+import { Unit } from '../../domain/unit';
 import { UnitService } from '../../services/unit.service';
-import { User } from '../../state/user/user';
+import { User } from '../../domain/user';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../app.reducer';
 
 import * as fromUserAction from '../../state/user/user.actions';
 import * as fromUnitAction from '../../state/unit/unit.actions';
+import { Token } from '../../domain/token';
+
+import { jwtDecode } from "jwt-decode";
 
 @Component({
   selector: 'app-login',
@@ -32,10 +35,10 @@ export class LoginComponent implements OnInit {
     private unitService: UnitService,
     private readonly store: Store<AppState>) {
       this.unit = {
-        unit: '',
+        id: '',
         logo: '',
         name: '',
-        tenant: ''
+        login: ''
       }
     }
 
@@ -44,10 +47,10 @@ export class LoginComponent implements OnInit {
         const unit = await this.unitService.getUnit(urlSegment.map(segment => segment.path).join('/'));
 
         this.unit = {
-          unit: unit.unit,
+          id: unit.id,
           logo: unit.logo,
           name: unit.name,
-          tenant: unit.tenant
+          login: unit.login
         };
 
         this.setFavicon(unit.logo);
@@ -69,14 +72,17 @@ export class LoginComponent implements OnInit {
     }
 
   onLogin() {
-    this.authService.login(this.username, this.password, this.unit.tenant).subscribe({
+    this.authService.login(this.username, this.password, this.unit.id).subscribe({
       next: (response) => {
 
         localStorage.setItem('token', response.token);
 
+        let token: Token = this.getDecodedToken(response.token);
+
         const user: User = {
           username: this.username,
           isLoggedIn: true,
+          role: token.role || 'NA'
         };
 
         this.store.dispatch(new fromUserAction.SaveAction(user));
@@ -85,9 +91,18 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.onToastButtonClick();
-        this.router.navigate(['/'+this.unit.unit]);
+        this.router.navigate(['/'+this.unit.login]);
       }
     });
+  }
+
+  getDecodedToken(token: string): Token {
+    try {
+      return jwtDecode<Token>(token);
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return {};
+    }
   }
 
   onToastButtonClick(): void {

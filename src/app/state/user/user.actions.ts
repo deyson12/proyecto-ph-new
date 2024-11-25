@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from './user';
+import { User } from '../../domain/user';
 
 export const SAVE = '[User] - Save'
 export const REMOVE = '[User] - Remove'

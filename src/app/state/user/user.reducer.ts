@@ -1,10 +1,11 @@
 import { Action } from '@ngrx/store';
 import * as fromUserAction from './user.actions';
-import { User } from './user';
+import { User } from '../../domain/user';
 
 export const userInitialState: User = {
     username: '',
-    isLoggedIn: false
+    isLoggedIn: false,
+    role: 'NA'
 };
 
 export function userReducer(state: User = userInitialState, action: Action) {

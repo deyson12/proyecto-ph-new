@@ -17,8 +17,26 @@
 
         <ul class="menu-inner py-1">
           <li class="menu-header small text-uppercase">
-            <span class="menu-header-text" data-i18n="Menu">Menu</span>
+            <span class="menu-header-text">Menu</span>
           </li>
+
+          @if (showOption("admin")) {
+            <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <a routerLink="/admin" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home"></i>
+                <div class="text-truncate">Administración</div>
+              </a>
+            </li>
+          }
+
+          @if (showOption("owner")) {
+          <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a routerLink="/owner" class="menu-link">
+              <i class="menu-icon tf-icons bx bx-buildings"></i>
+              <div class="text-truncate">Propietaros</div>
+            </a>
+          </li>
+          }
 
           <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
             <a routerLink="/home" class="menu-link">
@@ -38,20 +56,6 @@
             <a routerLink="/booking" class="menu-link">
               <i class="menu-icon tf-icons bx bx-calendar"></i>
               <div class="text-truncate">Reservas</div>
-            </a>
-          </li>
-
-          <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a routerLink="/booking2" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-calendar"></i>
-              <div class="text-truncate">Reservas2</div>
-            </a>
-          </li>
-
-          <li class="menu-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-            <a routerLink="/empty" class="menu-link">
-              <i class="menu-icon tf-icons bx bx-buildings"></i>
-              <div class="text-truncate">Propietaros</div>
             </a>
           </li>
 
@@ -581,7 +585,7 @@
                         </div>
                         <div class="flex-grow-1">
                           <span class="fw-medium d-block">{{user.username || 'N/A'}}</span>
-                          <small class="text-muted">Admin</small>
+                          <small class="text-muted">{{user.role}}</small>
                         </div>
                       </div>
                     </a>

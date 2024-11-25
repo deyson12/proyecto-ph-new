@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { User } from '../state/user/user';
+import { User } from '../domain/user';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app.reducer';
 

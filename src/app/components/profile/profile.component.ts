@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.utilService.test().subscribe({
       next: (response) => {
-        console.log('API Healthcheck OK:', response);
+        console.log('API Healthcheck:', response);
       },
       error: (error) => {
         console.error('Healthcheck fallido:', error);

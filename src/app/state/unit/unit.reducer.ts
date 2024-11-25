@@ -1,12 +1,12 @@
 import { Action } from '@ngrx/store';
 import * as fromUnitAction from './unit.actions';
-import { Unit } from './unit';
+import { Unit } from '../../domain/unit';
 
 export const unitInitialState: Unit = {
     name: '',
     logo: '',
-    tenant: '',
-    unit: ''
+    login: '',
+    id: ''
 };
 
 export function unitReducer(state: Unit = unitInitialState, action: Action) {

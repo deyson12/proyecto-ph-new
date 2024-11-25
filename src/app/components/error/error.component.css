@@ -1,0 +1,10 @@
+.container-xxl {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Hace que ocupe toda la altura de la pantalla */
+  }
+  .misc-wrapper {
+    text-align: center; /* Centra el contenido de texto dentro del contenedor */
+  }
+  
