@@ -91,7 +91,7 @@ export class OwnerComponent implements OnInit {
               '" class="text-body text-truncate"><span class="fw-medium">' +
               $name +
               '</span></a>' +
-              '<small class="text-muted">@' +
+              '<small class="text-muted">' +
               $email +
               '</small>' +
               '</div>' +
@@ -155,7 +155,7 @@ export class OwnerComponent implements OnInit {
           render: function (data, type, full, meta) {
             var $plan = full['contact'];
 
-            return '<span class="fw-medium">' + $plan + '</span>';
+            return '<span class="fw-light">' + $plan + '</span>';
           }
         },
         {
@@ -222,7 +222,7 @@ export class OwnerComponent implements OnInit {
             last: 'Ultimo'
           }
         },
-        info: 'Mostrando page _PAGE_ de _PAGES_, total de registros _TOTAL_ ',
+        info: 'Mostrando página _PAGE_ de _PAGES_, total de registros _TOTAL_ ',
         infoEmpty: 'No hay registros',
         infoFiltered: ' - de un total de _MAX_ registros'
       },

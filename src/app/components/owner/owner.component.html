@@ -5,13 +5,6 @@
         Cantidad de propietarios por cada torre en la unidad
     </p>
 
-    <p>
-        <button data-bs-target="#addRoleModal" data-bs-toggle="modal"
-            class="btn btn-primary mb-3 text-nowrap add-new-role">
-            Agregar un nuevo propietario
-        </button>
-    </p>
-
     <!-- Role cards -->
     <div class="row g-4">
 
@@ -20,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between mb-2">
-                        <h6 class="fw-normal">{{ building.apartments?.length || '0' }} apartamentos</h6>
+                        <h6 class="fw-normal">{{ building.apartments.length || '0' }} apartamentos</h6>
                         <ul class="list-unstyled d-flex align-items-center avatar-group mb-0">
                             <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top"
                                 title="Vinnie Mostowy" class="avatar avatar-sm pull-up">
@@ -44,6 +37,13 @@
             </div>
         </div>
         }
+
+        <p>
+            <button data-bs-target="#addRoleModal" data-bs-toggle="modal"
+                class="btn btn-primary mb-3 text-nowrap add-new-role">
+                Agregar un nuevo propietario
+            </button>
+        </p>
 
         <div class="col-12">
             <!-- Role Table -->

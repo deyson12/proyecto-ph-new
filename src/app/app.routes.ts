@@ -11,6 +11,7 @@ import { AdminComponent } from './components/admin/admin/admin.component';
 import { ErrorComponent } from './components/error/error.component';
 import { MapComponent } from './components/map/map.component';
 import { OwnerComponent } from './components/owner/owner.component';
+import { InfoComponent } from './components/info/info.component';
 
 export const routes: Routes = [
     { path: 'forgotPassword', component: ForgotPasswordComponent },
@@ -29,6 +30,7 @@ export const routes: Routes = [
         { path: 'booking', component: BookingComponent },
         { path: 'empty', component: EmptyComponent, data: { roles: ['SUPER_ADMIN'] } },
         { path: 'map', component: MapComponent},
+        { path: 'info', component: InfoComponent},
       ]
     },
     { path: '**', component: NotFoundComponent }
