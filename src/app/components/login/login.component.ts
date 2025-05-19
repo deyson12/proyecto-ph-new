@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import * as fromUnitAction from '../../state/unit/unit.actions';
 import { Token } from '../../domain/token';
 
 import { jwtDecode } from "jwt-decode";
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -33,12 +34,15 @@ export class LoginComponent implements OnInit {
     private router: Router, 
     private route: ActivatedRoute,
     private unitService: UnitService,
-    private readonly store: Store<AppState>) {
+    private readonly store: Store<AppState>,
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document,) {
       this.unit = {
         id: '',
         logo: '',
         name: '',
-        login: ''
+        login: '',
+        style: ''
       }
     }
 
@@ -50,14 +54,15 @@ export class LoginComponent implements OnInit {
           id: unit.id,
           logo: unit.logo,
           name: unit.name,
-          login: unit.login
+          login: unit.login,
+          style: unit.style
         };
 
         this.setFavicon(unit.logo);
     
         this.store.dispatch(new fromUnitAction.SaveAction(this.unit));
       });
-    }    
+    }
 
     setFavicon(url: string) {
       const link: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");

@@ -60,7 +60,8 @@ export class UnitService {
       id: '',
       logo: '',
       login: '',
-      name: ''
+      name: '',
+      style: ''
     }
     return unit;
   }

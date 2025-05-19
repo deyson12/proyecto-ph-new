@@ -3,4 +3,5 @@ export interface Unit {
     name: string;
     logo: string;
     login: string;
+    style: string;
 }

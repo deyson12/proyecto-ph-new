@@ -17,7 +17,8 @@ export class ForgotPasswordComponent {
     id: '',
     logo: '',
     name: '',
-    login: ''
+    login: '',
+    style: ''
   };
 
   constructor(private router: Router, private readonly state: Store<AppState>,) {

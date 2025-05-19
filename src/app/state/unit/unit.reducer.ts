@@ -3,10 +3,11 @@ import * as fromUnitAction from './unit.actions';
 import { Unit } from '../../domain/unit';
 
 export const unitInitialState: Unit = {
+    id: '',
     name: '',
     logo: '',
     login: '',
-    id: ''
+    style: ''
 };
 
 export function unitReducer(state: Unit = unitInitialState, action: Action) {
